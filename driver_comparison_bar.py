@@ -7,9 +7,9 @@ driversData = pd.read_csv('data/1984results.csv')
 D1 = 'Niki Lauda'
 D2 = 'Alain Prost'
 
-driversData['GAINED D1'] = driversData['QUALI D1'] - driversData['POS D1']
+driversData['GAINED D1'] = driversData['ST D1'] - driversData['POS D1']
 
-driversData['GAINED D2'] = driversData['QUALI D2'] - driversData['POS D2']
+driversData['GAINED D2'] = driversData['ST D2'] - driversData['POS D2']
 
 sommaD1 = driversData[driversData['GAINED D1'] > 0]['GAINED D1'].sum()
 
