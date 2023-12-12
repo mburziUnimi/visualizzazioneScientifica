@@ -1,33 +1,33 @@
-POS	QUALI	NO	DRIVER	CAR	LAPS	TIME/RETIRED	PTS	RACE	FAST LAP
-1	4	7	Alain Prost	MCLAREN TAG	61	1:42:34.492	9	Brazilian	True
-NC	6	8	Niki Lauda	MCLAREN TAG	38	DNF	0	Brazilian	False
-1	8	8	Niki Lauda	MCLAREN TAG	75	1:29:23.430	9	South Africa	False
-2	5	7	Alain Prost	MCLAREN TAG	75	+65.950s	6	South Africa	False
-NC	14	8	Niki Lauda	MCLAREN TAG	35	DNF	0	Belgium	False
-NC	8	7	Alain Prost	MCLAREN TAG	5	DNF	0	Belgium	False
-1	2	7	Alain Prost	MCLAREN TAG	60	1:36:53.679	9	Imola	False
-NC	5	8	Niki Lauda	MCLAREN TAG	15	DNF	0	Imola	False
-1	9	8	Niki Lauda	MCLAREN TAG	79	1:31:11.951	9	France	True
-7	5	7	Alain Prost	MCLAREN TAG	78	+1 lap	0	France	False
-1	1	7	Alain Prost	MCLAREN TAG	31	1:01:07.740	4,5	Monaco	False
-NC	8	8	Niki Lauda	MCLAREN TAG	23	DNF	0	Monaco	False
-2	8	8	Niki Lauda	MCLAREN TAG	70	+2.612s	6	Canada	False
-3	2	7	Alain Prost	MCLAREN TAG	70	+88.032s	4	Canada	False
-4	2	7	Alain Prost	MCLAREN TAG	63	+115.258s	3	Detroit	False
-NC	10	8	Niki Lauda	MCLAREN TAG	33	DNF	0	Detroit	False
-NC	5	8	Niki Lauda	MCLAREN TAG	60	DNF	0	Dallas	True
-NC	7	7	Alain Prost	MCLAREN TAG	56	DNF	0	Dallas	False
-1	3	8	Niki Lauda	MCLAREN TAG	71	1:29:28.532	9	Great Britain	True
-NC	2	7	Alain Prost	MCLAREN TAG	37	DNF	0	Great Britain	False
-1	1	7	Alain Prost	MCLAREN TAG	44	1:24:43.210	9	Germany	True
-2	7	8	Niki Lauda	MCLAREN TAG	44	+3.149s	6	Germany	False
-1	4	8	Niki Lauda	MCLAREN TAG	51	1:21:12.851	9	Austria	True
-NC	2	7	Alain Prost	MCLAREN TAG	28	DNF	0	Austria	False
-1	1	7	Alain Prost	MCLAREN TAG	71	1:37:21.468	9	Netherlands	False
-2	6	8	Niki Lauda	MCLAREN TAG	71	+10.283s	6	Netherlands	False
-1	4	8	Niki Lauda	MCLAREN TAG	51	1:20:29.065	9	Italy	True
-NC	2	7	Alain Prost	MCLAREN TAG	3	DNF	0	Italy	False
-1	2	7	Alain Prost	MCLAREN TAG	67	1:35:13.284	9	Europe	False
-4	15	8	Niki Lauda	MCLAREN TAG	67	+43.086s	3	Europe	False
-1	2	7	Alain Prost	MCLAREN TAG	70	1:41:11.753	9	Portugal	False
-2	11	8	Niki Lauda	MCLAREN TAG	70	+13.425s	6	Portugal	True
+POS,QUALI,DRIVER,CAR,PTS,RACE,FAST LAP
+1,4,Alain Prost,MCLAREN TAG,9,Brazilian,True
+None,6,Niki Lauda,MCLAREN TAG,0,Brazilian,False
+1,8,Niki Lauda,MCLAREN TAG,9,South Africa,False
+2,5,Alain Prost,MCLAREN TAG,6,South Africa,False
+None,14,Niki Lauda,MCLAREN TAG,0,Belgium,False
+None,8,Alain Prost,MCLAREN TAG,0,Belgium,False
+1,2,Alain Prost,MCLAREN TAG,9,Imola,False
+None,5,Niki Lauda,MCLAREN TAG,0,Imola,False
+1,9,Niki Lauda,MCLAREN TAG,9,FraNonee,True
+7,5,Alain Prost,MCLAREN TAG,0,FraNonee,False
+1,1,Alain Prost,MCLAREN TAG,4.5,Monaco,False
+None,8,Niki Lauda,MCLAREN TAG,0,Monaco,False
+2,8,Niki Lauda,MCLAREN TAG,6,Canada,False
+3,2,Alain Prost,MCLAREN TAG,4,Canada,False
+4,2,Alain Prost,MCLAREN TAG,3,Detroit,False
+None,10,Niki Lauda,MCLAREN TAG,0,Detroit,False
+None,5,Niki Lauda,MCLAREN TAG,0,Dallas,True
+None,7,Alain Prost,MCLAREN TAG,0,Dallas,False
+1,3,Niki Lauda,MCLAREN TAG,9,Great Britain,True
+None,2,Alain Prost,MCLAREN TAG,0,Great Britain,False
+1,1,Alain Prost,MCLAREN TAG,9,Germany,True
+2,7,Niki Lauda,MCLAREN TAG,6,Germany,False
+1,4,Niki Lauda,MCLAREN TAG,9,Austria,True
+None,2,Alain Prost,MCLAREN TAG,0,Austria,False
+1,1,Alain Prost,MCLAREN TAG,9,Netherlands,False
+2,6,Niki Lauda,MCLAREN TAG,6,Netherlands,False
+1,4,Niki Lauda,MCLAREN TAG,9,Italy,True
+None,2,Alain Prost,MCLAREN TAG,0,Italy,False
+1,2,Alain Prost,MCLAREN TAG,9,Europe,False
+4,15,Niki Lauda,MCLAREN TAG,3,Europe,False
+1,2,Alain Prost,MCLAREN TAG,9,Portugal,False
+2,11,Niki Lauda,MCLAREN TAG,6,Portugal,True
