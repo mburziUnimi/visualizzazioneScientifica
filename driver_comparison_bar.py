@@ -2,7 +2,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-driversData = pd.read_csv('data/1984results_new.csv')
+driversData = pd.read_csv('data/1984results.csv')
 
 D1 = 'Niki Lauda'
 D2 = 'Alain Prost'
@@ -34,3 +34,5 @@ plt.title('Posizioni conquistate nella stagione')
 
 plt.show()
 
+
+# %%
