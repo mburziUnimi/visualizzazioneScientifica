@@ -1,133 +1,115 @@
 import pandas as pd
-import matplotlib as plt
-import numpy as np
+import matplotlib.pyplot as plt
 
-from matplotlib.patches import Circle, RegularPolygon
-from matplotlib.path import Path
-from matplotlib.projections import register_projection
-from matplotlib.projections.polar import PolarAxes
-from matplotlib.spines import Spine
-from matplotlib.transforms import Affine2D
+from math import pi
 
-results = pd.read_csv('data/1984results.csv')
+#Global variable
+BG_WHITE = "#fbf9f4"
+BLUE = "#2a475e"
+GREY70 = "#b3b3b3"
+GREY_LIGHT = "#f6f6f6"
+COLORS = [ "#007A87", "#FFB400"]
+CATEGORIES = ["Win rate", "Podium rate", "Pole rate", "Fastest lap rate"]
 
-def radar_factory(num_vars, frame='circle'):
-    """
-    Create a radar chart with `num_vars` axes.
 
-    This function creates a RadarAxes projection and registers it.
+def convertData(data, title, name):
+    pilots = {"pilot1":[],"pilot2":[]}
 
-    Parameters
-    ----------
-    num_vars : int
-        Number of variables for radar chart.
-    frame : {'circle', 'polygon'}
-        Shape of frame surrounding axes.
+    #preparazione dati
+    for category in data:
+        if category == "QUALI D1":
+            countPole = 0
+            for position in data[category]:
+                if position == 1:
+                    countPole += 1
+            pilots["pilot1"].append(countPole)
+        elif category == "QUALI D2":
+            countPole = 0
+            for position in data[category]:
+                if position == 1:
+                    countPole += 1
+            pilots["pilot2"].append(countPole)
+        elif category == "POS D1":
+            countWin = 0
+            countPodium = 0
+            for qualification in data[category]:
+                if qualification <= 3:
+                    countPodium += 1
+                    if qualification == 1:
+                        countWin += 1
+            pilots["pilot1"].append(countWin)
+            pilots["pilot1"].append(countPodium)
+        elif category == "POS D2":
+            countWin = 0
+            countPodium = 0
+            for qualification in data[category]:
+                if qualification <= 3:
+                    countPodium += 1
+                    if qualification == 1:
+                        countWin += 1
+            pilots["pilot2"].append(countWin)
+            pilots["pilot2"].append(countPodium)
+        elif category == "FAST LAP":
+            countPilot1 = 0
+            countPilot2 = 0
+            for lap in data[category]:
+                if lap == name[0]:
+                    countPilot1 += 1
+                elif lap == name[1]:
+                    countPilot2 += 1
+            pilots["pilot1"].append(countPilot1)
+            pilots["pilot2"].append(countPilot2)
 
-    """
-    # calculate evenly-spaced axis angles
-    theta = np.linspace(0, 2*np.pi, num_vars, endpoint=False)
+    drawChart(pilots, title, name)
 
-    class RadarTransform(PolarAxes.PolarTransform):
 
-        def transform_path_non_affine(self, path):
-            # Paths with non-unit interpolation steps correspond to gridlines,
-            # in which case we force interpolation (to defeat PolarTransform's
-            # autoconversion to circular arcs).
-            if path._interpolation_steps > 1:
-                path = path.interpolated(num_vars)
-            return Path(self.transform(path.vertices), path.codes)
+def drawChart(pilots, title, name):
+    #number of variable
+    N = len(CATEGORIES)
+    # What will be the angle of each axis in the plot? (we divide the plot / number of variable)
+    angles = [n / float(N) * 2 * pi for n in range(N)]
+    angles += angles[:1]
+    
+    # Initialise the spider plot
+    ax = plt.subplot(111, polar=True)
+    
+    # If you want the first axis to be on top:
+    ax.set_theta_offset(pi / 2)
+    ax.set_theta_direction(-1)
+    
+    # Draw one axe per variable + add labels
+    plt.xticks(angles[:-1], CATEGORIES)
+    ax.set_facecolor(GREY_LIGHT)
+    
+    # Draw ylabels
+    ax.set_rlabel_position(1)
+    plt.yticks([3,5,7,10,15,20], ["3","5","7","10","15","20"], color="grey", size=8)
+    plt.ylim(0,20)
+    ax.set_title(title, weight='bold', size='medium', position=(0.5, 1.1),
+                        horizontalalignment='center', verticalalignment='center')
+    
+    for index, pilot in enumerate(pilots):
+        pilots[pilot] += pilots[pilot][:1]
+        ax.plot(angles, pilots[pilot], c=COLORS[index], linewidth=2, linestyle='solid', label=name[index])
+        ax.scatter(angles, pilots[pilot], s=40, c=COLORS[index], zorder=10)
+        ax.fill(angles, pilots[pilot], c=COLORS[index], alpha=0.1)
+    
+    # Add legend
+    plt.legend(loc='upper right', bbox_to_anchor=(0.1, 0.1))
 
-    class RadarAxes(PolarAxes):
+    # Show the graph
+    plt.show()
 
-        name = 'radar'
-        PolarTransform = RadarTransform
-
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            # rotate plot such that the first axis is at the top
-            self.set_theta_zero_location('N')
-
-        def fill(self, *args, closed=True, **kwargs):
-            """Override fill so that line is closed by default"""
-            return super().fill(closed=closed, *args, **kwargs)
-
-        def plot(self, *args, **kwargs):
-            """Override plot so that line is closed by default"""
-            lines = super().plot(*args, **kwargs)
-            for line in lines:
-                self._close_line(line)
-
-        def _close_line(self, line):
-            x, y = line.get_data()
-            # FIXME: markers at x[0], y[0] get doubled-up
-            if x[0] != x[-1]:
-                x = np.append(x, x[0])
-                y = np.append(y, y[0])
-                line.set_data(x, y)
-
-        def set_varlabels(self, labels):
-            self.set_thetagrids(np.degrees(theta), labels)
-
-        def _gen_axes_patch(self):
-            # The Axes patch must be centered at (0.5, 0.5) and of radius 0.5
-            # in axes coordinates.
-            if frame == 'circle':
-                return Circle((0.5, 0.5), 0.5)
-            elif frame == 'polygon':
-                return RegularPolygon((0.5, 0.5), num_vars,
-                                      radius=.5, edgecolor="k")
-            else:
-                raise ValueError("Unknown value for 'frame': %s" % frame)
-
-        def _gen_axes_spines(self):
-            if frame == 'circle':
-                return super()._gen_axes_spines()
-            elif frame == 'polygon':
-                # spine_type must be 'left'/'right'/'top'/'bottom'/'circle'.
-                spine = Spine(axes=self,
-                              spine_type='circle',
-                              path=Path.unit_regular_polygon(num_vars))
-                # unit_regular_polygon gives a polygon of radius 1 centered at
-                # (0, 0) but we want a polygon of radius 0.5 centered at (0.5,
-                # 0.5) in axes coordinates.
-                spine.set_transform(Affine2D().scale(.5).translate(.5, .5)
-                                    + self.transAxes)
-                return {'polar': spine}
-            else:
-                raise ValueError("Unknown value for 'frame': %s" % frame)
-
-    register_projection(RadarAxes)
-    return theta
 
 if __name__ == '__main__':
-    N = 4
-    theta = radar_factory(N, frame='polygon')
-
-    spoke_labels = ['Prost', 'Lauda']
-
-    fig, axs = plt.subplots(figsize=(4, 4), nrows=2, ncols=2,
-                            subplot_kw=dict(projection='radar'))
-    fig.subplots_adjust(wspace=0.25, hspace=0.20, top=0.85, bottom=0.05)
-
-    colors = ['b', 'r', 'g', 'm', 'y']
-    # Plot the four cases from the example data on separate axes
-    for ax, (title, case_data) in zip(axs.flat, data):
-        ax.set_rgrids([0.2, 0.4, 0.6, 0.8])
-        ax.set_title(title, weight='bold', size='medium', position=(0.5, 1.1),
-                     horizontalalignment='center', verticalalignment='center')
-        for d, color in zip(case_data, colors):
-            ax.plot(theta, d, color=color)
-            ax.fill(theta, d, facecolor=color, alpha=0.25, label='_nolegend_')
-        ax.set_varlabels(spoke_labels)
-
-    # add legend relative to top-left plot
-    labels = ('Factor 1', 'Factor 2', 'Factor 3', 'Factor 4', 'Factor 5')
-    legend = axs[0, 0].legend(labels, loc=(0.9, .95),
-                              labelspacing=0.1, fontsize='small')
-
-    fig.text(0.5, 0.965, '5-Factor Solution Profiles Across Four Scenarios',
-             horizontalalignment='center', color='black', weight='bold',
-             size='large')
-
-    plt.show()
+    data = pd.read_csv('data/1984results.csv')
+    convertData(data, "1984", ["Lauda", "Prost"])
+    #da verificare i nomi
+    data = pd.read_csv('data/1988results.csv')
+    convertData(data, "1988", ["Prost", "Senna"]) 
+    #da verificare i nomi
+    data = pd.read_csv('data/2007results.csv')
+    convertData(data, "2007", ["Raikkonen", "Hamilton"])
+    #da verificare i nomi
+    data = pd.read_csv('data/2021results.csv')
+    convertData(data, "2021", ["Verstappen", "Hamilton"])
