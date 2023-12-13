@@ -18,6 +18,11 @@ d['GAINED D2'].fillna(0, inplace=True)
 
 d.head(n = 17)
 
-sns.violinplot(x = d['GAINED D1'], inner="point")
-sns.violinplot(x = d['GAINED D2'], inner="point")
+condizione1 = d['POS D1'] != None
+posconq = d.loc[condizione1, 'GAINED D1']
+
+data = [7, 8, 6, 2, 5, 3, 4, 3, 11, 9]
+
+sns.violinplot(x = data, inner="point")
+#sns.violinplot(x = d['GAINED D2'], inner="point")
 # %%
