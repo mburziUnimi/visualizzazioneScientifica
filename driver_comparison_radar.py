@@ -138,15 +138,14 @@ def drawChart(pilots, title, name):
     plt.show()
 
 
-if __name__ == '__main__':
-    data = pd.read_csv('data/1984results.csv')
-    convertData(data, "1984", ["Lauda", "Prost"])
-    #da verificare i nomi
-    data = pd.read_csv('data/1988results.csv')
-    convertData(data, "1988", ["Prost", "Senna"]) 
-    #da verificare i nomi
-    data = pd.read_csv('data/2007results.csv')
-    convertData(data, "2007", ["Raikkonen", "Hamilton", "Alonso"])
-    #da verificare i nomi
-    data = pd.read_csv('data/2021results.csv')
-    convertData(data, "2021", ["Verstappen", "Hamilton"])
+data = pd.read_csv('data/1984results.csv')
+convertData(data, "1984", ["Lauda", "Prost"])
+#da verificare i nomi
+data = pd.read_csv('data/1988results.csv')
+convertData(data, "1988", ["Prost", "Senna"]) 
+#da verificare i nomi
+data = pd.read_csv('data/2007results.csv')
+convertData(data, "2007", ["Raikkonen", "Hamilton", "Alonso"])
+#da verificare i nomi
+data = pd.read_csv('data/2021results.csv')
+convertData(data, "2021", ["Verstappen", "Hamilton"])
