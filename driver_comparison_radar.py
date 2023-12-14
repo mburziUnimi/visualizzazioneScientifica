@@ -8,7 +8,10 @@ BG_WHITE = "#fbf9f4"
 BLUE = "#2a475e"
 GREY70 = "#b3b3b3"
 GREY_LIGHT = "#f6f6f6"
-COLORS = [ "#007A87", "#FFB400"]
+COLORS = [ "#FFC20A", "#0C7BDC", "#994F00",]
+# Padding used to customize the location of the tick labels
+X_VERTICAL_TICK_PADDING = 3
+X_HORIZONTAL_TICK_PADDING = 35  
 CATEGORIES = ["Win rate", "Podium rate", "Pole rate", "Fastest lap rate"]
 
 
@@ -29,6 +32,12 @@ def convertData(data, title, name):
                 if position == 1:
                     countPole += 1
             pilots["pilot2"].append(countPole)
+        elif category == "QUALI D3":
+            countPole = 0
+            for position in data[category]:
+                if position == 1:
+                    countPole += 1
+            pilots["pilot3"].append(countPole)
         elif category == "POS D1":
             countWin = 0
             countPodium = 0
@@ -49,16 +58,34 @@ def convertData(data, title, name):
                         countWin += 1
             pilots["pilot2"].append(countWin)
             pilots["pilot2"].append(countPodium)
+        elif category == "POS D3":
+            countWin = 0
+            countPodium = 0
+            pilots["pilot3"] = []
+            for qualification in data[category]:
+                if qualification <= 3:
+                    countPodium += 1
+                    if qualification == 1:
+                        countWin += 1
+            pilots["pilot3"].append(countWin)
+            pilots["pilot3"].append(countPodium)
         elif category == "FAST LAP":
             countPilot1 = 0
             countPilot2 = 0
+            countPilot3 = 0
             for lap in data[category]:
                 if lap == name[0]:
                     countPilot1 += 1
                 elif lap == name[1]:
                     countPilot2 += 1
+                if len(name) == 3:
+                    if lap == name[2]:
+                        countPilot2 += 1
+                    
             pilots["pilot1"].append(countPilot1)
             pilots["pilot2"].append(countPilot2)
+            if len(name) == 3:
+                pilots["pilot3"].append(countPilot3)
 
     drawChart(pilots, title, name)
 
@@ -81,17 +108,27 @@ def drawChart(pilots, title, name):
     plt.xticks(angles[:-1], CATEGORIES)
     ax.set_facecolor(GREY_LIGHT)
     
+    
     # Draw ylabels
-    ax.set_rlabel_position(1)
-    plt.yticks([3,5,7,10,15,20], ["3","5","7","10","15","20"], color="grey", size=8)
-    plt.ylim(0,20)
-    ax.set_title(title, weight='bold', size='medium', position=(0.5, 1.1),
+    #ax.set_rlabel_position(1)
+    plt.yticks([3,7,11,15,19], ["3","7","11","15","19"], color="grey", size=8)
+    plt.ylim(0,19)
+
+    ax.set_title(title, weight='bold', size='large', position=(0.5,1),
                         horizontalalignment='center', verticalalignment='center')
+    
+    # Adjust tick label positions ------------------------------------
+    XTICKS = ax.xaxis.get_major_ticks()
+    for tick in XTICKS[0::2]:
+        tick.set_pad(X_VERTICAL_TICK_PADDING)
+        
+    for tick in XTICKS[1::2]:
+        tick.set_pad(X_HORIZONTAL_TICK_PADDING)
     
     for index, pilot in enumerate(pilots):
         pilots[pilot] += pilots[pilot][:1]
         ax.plot(angles, pilots[pilot], c=COLORS[index], linewidth=2, linestyle='solid', label=name[index])
-        ax.scatter(angles, pilots[pilot], s=40, c=COLORS[index], zorder=10)
+        ax.scatter(angles, pilots[pilot], s=25, c=COLORS[index], zorder=100)
         ax.fill(angles, pilots[pilot], c=COLORS[index], alpha=0.1)
     
     # Add legend
@@ -109,7 +146,7 @@ if __name__ == '__main__':
     convertData(data, "1988", ["Prost", "Senna"]) 
     #da verificare i nomi
     data = pd.read_csv('data/2007results.csv')
-    convertData(data, "2007", ["Raikkonen", "Hamilton"])
+    convertData(data, "2007", ["Raikkonen", "Hamilton", "Alonso"])
     #da verificare i nomi
     data = pd.read_csv('data/2021results.csv')
     convertData(data, "2021", ["Verstappen", "Hamilton"])
