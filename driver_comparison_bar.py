@@ -27,7 +27,7 @@ ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
 ax.spines['bottom'].set_visible(True)
 ax.spines['left'].set_visible(True)
-#ax.invert_yaxis()   # labels read top-to-bottom
+#ax.invert_yaxis()   # legge le label dall'alto al basso
 ax.bar_label(bars, padding=10)
 ax.set_xlabel('Posizioni')
 plt.title('Posizioni conquistate nella stagione')
